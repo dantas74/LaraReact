@@ -1,24 +1,15 @@
-import { Link } from '@inertiajs/react'
-import { useEffect, useState } from 'react'
+import { Link, usePage } from '@inertiajs/react'
+import { useRoute } from 'ziggy'
 
 const MainLayout = ({ children }) => {
-  const [timer, setTimer] = useState(0)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimer(timer + 1)
-    }, 1000)
-
-    return () => {
-      clearInterval(interval)
-    }
-  })
+  const { flash: { success } } = usePage().props
+  const route = useRoute()
 
   return (
     <>
-      <Link href="/">Main Page</Link>&nbsp;
-      <Link href="/hello">Show Page</Link>
-      <div>The page with time {timer}</div>
+      {success && <div className='success'>{success}</div>}
+      <Link href={route('listing.index')}>Listings</Link>&nbsp;
+      <Link href={route('listing.create')}>New Listing</Link>
       {children}
     </>
   )
